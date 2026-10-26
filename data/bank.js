@@ -23,7 +23,7 @@
     { id: 'u2', name: 'CSS3', sub: '3주차 · Lec 3' },
     { id: 'u3', name: '자바스크립트 기초', sub: '3–4주차 · Lec 4' },
     { id: 'u4', name: '함수', sub: '5주차 · Ch 5' },
-    { id: 'u5', name: '객체와 프로토타입', sub: '7주차 · Ch 6' },
+    { id: 'u5', name: '객체', sub: '7주차 · Ch 6' },
     { id: 'u6', name: '클래스', sub: '8주차 · Ch 9' },
     { id: 'u7', name: '이벤트', sub: '6주차 · Lec 9' },
     { id: 'u8', name: 'DOM', sub: '6주차 · Lec 8' },

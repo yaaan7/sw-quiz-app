@@ -1,115 +1,243 @@
-/* 단원 7 — 이벤트 (Lec 9) */
+/* 단원 7 — 이벤트 (Lec 9) — 슬라이드 범위만 */
 (function () {
   var U = 'u7';
 
+  // ── 개념 ────────────────────────────────────
   mc(U, '이벤트(event)란?',
-    ['사용자 입력이나 브라우저 상태 변화 등 발생한 사건', '자바스크립트의 변수 종류', 'HTML 태그의 종류', '서버 응답 코드'], 0,
-    '클릭, 키 입력, 로딩 완료, 타이머 등 "일어난 일"이에요. 이벤트가 발생하면 등록해 둔 이벤트 리스너(핸들러)가 실행돼요.',
-    '6주차 · 이벤트', { tag: '이벤트 개념' });
+    ['클릭, 키 입력, 로딩 완료, 타임아웃 등 사용자 행위나 문서·브라우저 상태 변화로 발생한 사건', '자바스크립트 변수의 종류', 'HTML 태그의 종류', '서버가 보내는 응답 코드'], 0,
+    '이벤트가 발생하면 이에 대처하기 위해 작성한 자바스크립트 코드(이벤트 리스너)가 호출돼요.',
+    '7주차 · 이벤트 개요', { tag: '이벤트 개념' });
 
-  mc(U, '이벤트 리스너를 등록하는 방법이 아닌 것은?',
-    ['CSS의 :event 선택자', 'HTML 태그의 onclick 속성', 'DOM 객체의 onclick 프로퍼티', 'addEventListener() 메서드'], 0,
-    '등록 방법은 3가지: HTML 이벤트 속성, DOM 프로퍼티 대입, addEventListener().',
-    '6주차 · 이벤트 리스너 등록', { tag: '리스너 등록' });
+  mc(U, '이벤트 리스너 이름은 어떻게 만들까?',
+    ['이벤트 이름 앞에 on을 붙인다 (mousedown → onmousedown)', '이벤트 이름 뒤에 Listener를 붙인다', '이벤트 이름 앞에 get을 붙인다', '이벤트 이름과 같다'], 0,
+    'HTML5의 이벤트 종류는 70여 가지예요. keydown의 리스너는 onkeydown, mousedown의 리스너는 onmousedown이에요.',
+    '7주차 · 이벤트 종류', { tag: '이벤트 개념' });
 
-  fb(U, 'addEventListener로 클릭 이벤트를 등록하세요.',
-    'const btn = document.getElementById("b");\nbtn.___("___", function () {\n  alert("클릭!");\n});', ['addEventListener', 'click'], ['addEventListener', 'click', 'onclick', 'attachEvent', 'mouseclick'],
-    'addEventListener(이벤트 이름, 리스너). 이벤트 이름에는 on을 붙이지 않아요(click ○, onclick ✕).',
-    '6주차 · addEventListener', { tag: 'addEventListener' });
+  mc(U, '이벤트와 발생 상황의 짝으로 알맞은 것은?',
+    ['dblclick – 마우스 더블클릭 / resize – 윈도우 크기 변경', 'load – 키를 누를 때 / keyup – 이미지 로딩 완료', 'submit – reset 버튼 클릭 / reset – submit 버튼 클릭', 'change – 문서 로딩 완료 / click – 키를 놓을 때'], 0,
+    'keydown(키를 누를 때), keyup(키를 놓을 때), load(이미지·문서 로딩 완료), change(라디오 등 선택 변경), submit/reset(해당 버튼 클릭)이에요.',
+    '7주차 · 브라우저에 발생하는 다양한 이벤트', { tag: '이벤트 종류' });
 
-  mc(U, '같은 요소에 onclick 프로퍼티를 두 번 대입하면?',
-    ['나중 것으로 덮어써져 마지막 리스너만 실행된다', '둘 다 실행된다', '오류가 난다', '첫 번째만 실행된다'], 0,
-    '프로퍼티 방식은 하나만 저장돼요. 여러 개를 달려면 addEventListener를 써요.',
-    '6주차 · 리스너 등록', { tag: '리스너 등록' });
+  // ── 리스너 작성 ─────────────────────────────
+  mc(U, '이벤트 리스너를 만드는 3가지 방법으로 알맞은 것은?',
+    ['HTML 태그 내에 작성 / DOM 객체의 이벤트 리스너 프로퍼티에 작성 / addEventListener() 메소드 이용', 'CSS에 작성 / HTML에 작성 / 서버에 작성', 'onclick / onload / onsubmit', 'alert / confirm / prompt'], 0,
+    '슬라이드에서는 이 3가지에, 익명 함수를 쓰는 방식을 더해 4~5가지로 비교해요.',
+    '7주차 · 이벤트 리스너 만들기', { tag: '리스너 작성' });
 
-  mc(U, '같은 요소에 addEventListener("click", ...)을 두 번 등록하면?',
-    ['등록 순서대로 둘 다 실행된다', '마지막 것만 실행된다', '첫 번째만 실행된다', '오류가 난다'], 0,
-    'addEventListener는 여러 개를 중복 등록할 수 있고 등록한 순서대로 호출돼요.',
-    '6주차 · addEventListener', { tag: 'addEventListener' });
+  fb(U, '마우스를 올리면 orchid, 내리면 흰색으로 배경을 바꾸는 리스너를 HTML 태그에 작성하세요.',
+    '<p ___="this.style.backgroundColor=\'orchid\'"\n   ___="this.style.backgroundColor=\'white\'">', ['onmouseover', 'onmouseout'], ['onmouseover', 'onmouseout', 'onmouseon', 'onmouseleave', 'onhover'],
+    'HTML 태그의 이벤트 리스너 속성에 리스너 코드를 직접 써요. 여기서 this는 이벤트가 발생한 <p> 자신이에요.',
+    '7주차 · 예제 9-1', { tag: 'HTML 태그 리스너' });
 
-  mc(U, '이벤트 리스너를 제거하는 메서드는?',
-    ['removeEventListener', 'deleteEventListener', 'clearEvent', 'off'], 0,
-    'removeEventListener(이름, 같은 함수 참조)로 제거해요. 익명 함수는 참조가 없어 제거할 수 없어요.',
-    '6주차 · 리스너 제거', { tag: '리스너 제거' });
+  mc(U, 'p.onmouseover = over; 와 p.onmouseover = over(); 의 차이는?',
+    ['앞은 over 함수를 리스너로 등록하고, 뒤는 over를 바로 실행해 그 결과를 대입하는 잘못된 코드', '둘 다 같다', '앞이 잘못된 코드다', '뒤가 정상이고 앞은 오류다'], 0,
+    '리스너 프로퍼티에는 함수 이름(함수 자체)을 대입해야 해요. 괄호를 붙이면 그 자리에서 호출돼요.',
+    '7주차 · 이벤트 리스너 프로퍼티', { tag: '리스너 프로퍼티', x: { 3: '뒤의 over()는 호출 결과를 대입하므로 잘못된 코드예요.' }, code: 'p.onmouseover = over;    // ?\np.onmouseover = over();  // ?' });
 
-  mc(U, '이벤트 리스너 함수가 받는 매개변수(event 객체)로 알 수 있는 것은?',
-    ['이벤트 종류, 발생 대상, 좌표 등 이벤트 정보', '서버 응답', '전체 DOM 트리', '현재 시간만'], 0,
-    'event.type(종류), event.target(이벤트가 발생한 요소), clientX/clientY(마우스 좌표), key(키보드) 등이 있어요.',
-    '6주차 · event 객체', { tag: 'event 객체' });
+  fb(U, 'DOM 객체의 리스너 프로퍼티에 함수를 등록하세요.',
+    'let p = document.getElementById("p")\np.___ = over\np.___ = out', ['onmouseover', 'onmouseout'], ['onmouseover', 'onmouseout', 'mouseover', 'mouseout', 'onhover'],
+    '프로퍼티 이름은 on이 붙은 onmouseover / onmouseout이에요.',
+    '7주차 · 예제 9-2', { tag: '리스너 프로퍼티' });
 
-  mc(U, 'event.target이 가리키는 것은?',
-    ['이벤트가 실제로 발생한 요소', '리스너가 등록된 요소', 'document', 'window'], 0,
-    'target = 실제로 클릭된 가장 안쪽 요소, currentTarget = 리스너가 붙은 요소예요.',
-    '6주차 · event.target', { tag: 'target', x: { 1: '그건 currentTarget이에요.' } });
+  fb(U, 'addEventListener()로 리스너를 등록하세요.',
+    'p.___("___", over)', ['addEventListener', 'mouseover'], ['addEventListener', 'mouseover', 'onmouseover', 'attachEvent', 'addListener'],
+    'addEventListener("이벤트 이름", 리스너). 이벤트 이름에는 on을 붙이지 않아요 (mouseover ○, onmouseover ✕).',
+    '7주차 · 예제 9-3', { tag: 'addEventListener' });
 
-  mc(U, '리스너가 부모(ul)에만 등록되어 있다. 자식 li를 클릭했을 때 e.target과 e.currentTarget은?',
-    ['target = li, currentTarget = ul', 'target = ul, currentTarget = li', '둘 다 li', '둘 다 ul'], 0,
-    '이벤트는 버블링으로 부모에게 전달돼요. target은 실제 클릭된 li, currentTarget은 리스너가 달린 ul.',
-    '6주차 · 버블링', { tag: '버블링', code: '<ul id="list">\n  <li>A</li>\n  <li>B</li>\n</ul>\n<script>\n  list.addEventListener("click", e => {\n    // li 클릭 시 e.target? e.currentTarget?\n  });\n</script>' });
+  mc(U, 'addEventListener("mouseover", over)에서 첫 번째 인수는?',
+    ['"mouseover" (on이 붙지 않은 이벤트 이름)', '"onmouseover"', 'over()', 'this'], 0,
+    '리스너 프로퍼티는 onmouseover, addEventListener의 이벤트 이름은 mouseover예요.',
+    '7주차 · addEventListener', { tag: 'addEventListener' });
 
-  mc(U, '이벤트 버블링이란?',
-    ['자식에서 발생한 이벤트가 부모 → 조상 방향으로 전파되는 것', '부모에서 자식으로 전파되는 것', '이벤트가 취소되는 것', '이벤트가 반복되는 것'], 0,
-    '버블링: 안쪽 → 바깥쪽. 캡처링: 바깥쪽 → 안쪽. 기본은 버블링 단계에서 리스너가 실행돼요.',
-    '6주차 · 이벤트 전파', { tag: '버블링' });
+  mc(U, '익명 함수(anonymous function)란?',
+    ['함수 이름 없이 필요한 곳에 함수 코드를 바로 작성한 것', '이름이 숨겨진 변수', '매개변수가 없는 함수', '리턴값이 없는 함수'], 0,
+    '코드가 짧거나 한 곳에서만 사용할 때 편리해요. 예: p.onmouseover = function () { this.style.backgroundColor = "orchid" }',
+    '7주차 · 익명 함수로 이벤트 리스너 작성', { tag: '익명 함수' });
 
-  or(U, '내부 버튼을 클릭할 때 로그가 찍히는 순서는? (모두 버블링)',
-    '<div id="a">\n  <div id="b">\n    <button id="c">클릭</button>\n  </div>\n</div>\n// 각 요소 리스너: console.log("a" | "b" | "c")',
-    ['c', 'b', 'a'], [],
-    '버블링은 클릭된 요소(c)부터 부모(b) → 조상(a) 순서로 올라가요.',
-    '6주차 · 이벤트 전파', { tag: '버블링' });
+  fb(U, '익명 함수로 mouseout 리스너를 등록하세요.',
+    'p.addEventListener("mouseout",\n  ___ () { this.style.backgroundColor = "white" }\n)', ['function'], ['function', 'func', 'def', 'lambda', 'fn'],
+    'function 뒤에 이름 없이 바로 ( ) { } 를 써요. 이 안에서 this는 이벤트를 받은 객체예요.',
+    '7주차 · 예제 9-4', { tag: '익명 함수' });
 
-  mc(U, '이벤트 전파를 막는 메서드는?',
-    ['event.stopPropagation()', 'event.preventDefault()', 'event.stop()', 'event.cancel()'], 0,
-    'stopPropagation은 전파 중단, preventDefault는 브라우저의 기본 동작 취소예요.',
-    '6주차 · 이벤트 전파', { tag: 'stopPropagation', x: { 1: 'preventDefault는 기본 동작(링크 이동, 폼 제출 등)을 막아요. 전파는 그대로예요.' } });
+  mc(U, '다음 중 이벤트 리스너를 등록한 올바른 코드가 아닌 것은?',
+    ['p.onmouseover(function () { ... })', 'p.onmouseover = over', 'p.addEventListener("mouseover", over)', 'p.onmouseover = function () { ... }'], 0,
+    '리스너 프로퍼티는 함수를 대입(=)해서 등록해요. 함수처럼 호출하는 형태는 등록이 아니에요.',
+    '7주차 · 이벤트 리스너 작성 방법 비교', { tag: '리스너 작성' });
 
-  mc(U, 'event.preventDefault()가 하는 일은?',
-    ['링크 이동, 폼 제출 같은 브라우저 기본 동작을 취소한다', '이벤트 전파를 막는다', '리스너를 제거한다', '이벤트를 다시 발생시킨다'], 0,
-    '예: <a>의 클릭 시 페이지 이동, <form>의 submit 시 서버 전송을 막을 수 있어요.',
-    '6주차 · preventDefault', { tag: 'preventDefault' });
+  // ── 이벤트 객체 ─────────────────────────────
+  mc(U, '이벤트 객체(event object)란?',
+    ['발생한 이벤트에 관련된 다양한 정보를 담은 객체', '이벤트 리스너 함수 자체', 'HTML 태그', '이벤트가 발생할 때까지 유지되는 전역 변수'], 0,
+    'mousedown이면 마우스 좌표·버튼 번호·휠 값, keydown이면 키 값 등이 들어 있어요. 이벤트 처리가 끝나면 이벤트 객체는 소멸해요.',
+    '7주차 · 이벤트 객체', { tag: '이벤트 객체' });
 
-  mc(U, '마우스 버튼을 눌렀다 떼는 동안 발생하는 이벤트 순서는?',
-    ['mousedown → mouseup → click', 'click → mousedown → mouseup', 'mouseup → mousedown → click', 'mousedown → click → mouseup'], 0,
-    'click은 mousedown과 mouseup이 같은 요소에서 일어난 후에 발생해요.',
-    '6주차 · 마우스 이벤트', { tag: '마우스' });
+  mc(U, '이벤트 객체는 리스너 함수의 어디로 전달될까?',
+    ['첫 번째 매개변수', '마지막 매개변수', 'this', '전역 변수 e'], 0,
+    'function f(e) { } 처럼 첫 번째 매개변수 e로 전달받아요. 익명 함수도 function (e) { } 로 똑같이 받아요.',
+    '7주차 · 이벤트 객체 전달받기', { tag: '이벤트 객체' });
 
-  mc(U, '마우스가 요소 위로 올라올 때 발생하는 이벤트는?',
-    ['mouseover', 'mouseout', 'mousemove', 'mouseclick'], 0,
-    'mouseover(올라옴) / mouseout(벗어남) / mousemove(움직임). mouseclick은 존재하지 않아요.',
-    '6주차 · 마우스 이벤트', { tag: '마우스' });
+  fb(U, 'HTML 태그의 리스너 속성에서 이벤트 객체를 f()로 넘기세요.',
+    '<button onclick="f(___)">버튼</button>', ['event'], ['event', 'e', 'this', 'evt', 'window'],
+    'HTML 태그에 작성한 리스너 코드에서는 이벤트 객체를 event라는 이름으로 쓸 수 있어요.',
+    '7주차 · 예제 9-5', { tag: '이벤트 객체' });
 
-  mc(U, '입력창(input)의 값이 바뀔 때마다 즉시 발생하는 이벤트는?',
-    ['input', 'change', 'blur', 'submit'], 0,
-    'input: 값이 바뀔 때마다. change: 값이 바뀐 뒤 포커스를 잃을 때(텍스트 입력). ',
-    '6주차 · 입력 이벤트', { tag: '입력' });
+  mc(U, '<div onclick="alert(event.type)">를 클릭하면 어떤 값이 출력될까?',
+    ['click', 'onclick', 'div', 'mouse'], 0,
+    'e.type은 이벤트의 종류예요. on이 붙지 않은 "click"이 출력돼요.',
+    '7주차 · 이벤트 객체', { cat: 'predict', tag: '이벤트 객체', code: '<div onclick="alert(event.type)">버튼</div>', x: { 1: 'type은 on이 붙지 않은 이벤트 이름이에요.' } });
 
-  mc(U, '키보드에서 어떤 키가 눌렸는지 확인하는 이벤트 속성은?',
-    ['event.key', 'event.mouse', 'event.value', 'event.target.key'], 0,
-    'keydown 이벤트에서 e.key로 눌린 키(예: "Enter", "a")를 알 수 있어요.',
-    '6주차 · 키보드', { tag: '키보드' });
+  mc(U, '이벤트 객체의 target 프로퍼티는?',
+    ['이벤트를 유발시킨 DOM 객체(이벤트 타겟)를 가리킨다', '이벤트 종류를 문자열로 가진다', '이벤트 취소 여부를 가진다', '이벤트 발생 시각이다'], 0,
+    '<button>을 클릭했다면 click 이벤트의 이벤트 타겟은 그 버튼이에요.',
+    '7주차 · 이벤트 객체에 들어 있는 정보', { tag: '이벤트 객체' });
 
-  mc(U, '폼 전송 시 발생하는 이벤트와 그 이름은?',
-    ['submit (form 요소)', 'send (button 요소)', 'post (input 요소)', 'enter (form 요소)'], 0,
-    'form 요소의 submit 이벤트에서 preventDefault()로 페이지 이동을 막고 직접 처리하는 경우가 많아요.',
-    '6주차 · 폼 이벤트', { tag: 'submit' });
+  mc(U, '이벤트 객체의 공통 프로퍼티와 의미가 알맞게 짝지어진 것은?',
+    ['type – 이벤트 종류 / target – 이벤트 타겟 / currentTarget – 현재 리스너가 실행 중인 객체 / defaultPrevented – 디폴트 행동 취소 여부', 'type – 이벤트 대상 / target – 종류 / currentTarget – 취소 여부 / defaultPrevented – 시각', 'type – 좌표 / target – 키 값 / currentTarget – 버튼 번호 / defaultPrevented – 이름', 'type – 시각 / target – 취소 / currentTarget – 종류 / defaultPrevented – 타겟'], 0,
+    '예제 9-6에서 type, target, currentTarget, defaultPrevented를 출력해 봤어요.',
+    '7주차 · 예제 9-6', { tag: '이벤트 객체' });
 
-  mc(U, '페이지의 모든 리소스(이미지 등)가 로드된 뒤 발생하는 이벤트는?',
-    ['window의 load', 'document의 click', 'body의 scroll', 'window의 ready'], 0,
-    'load는 이미지, 스타일 등까지 모두 불러온 뒤, DOMContentLoaded는 HTML 파싱이 끝났을 때 발생해요.',
-    '6주차 · 로드 이벤트', { tag: 'load' });
+  // ── 디폴트 행동 취소 ───────────────────────
+  mc(U, '이벤트의 디폴트 행동으로 알맞지 않은 것은?',
+    ['<button>의 click 이벤트 – 자동으로 alert 출력', '<a>의 click 이벤트 – 웹 페이지 이동', 'submit 버튼의 click 이벤트 – 폼 데이터 전송', '<input type="checkbox">의 click 이벤트 – 체크박스 선택'], 0,
+    '디폴트 행동은 특정 이벤트에 대한 HTML 태그의 기본 행동이에요.',
+    '7주차 · 이벤트의 디폴트 행동', { tag: '디폴트 행동' });
 
-  mc(U, '실행 결과로 콘솔에 출력되는 값은? (버튼을 한 번 클릭)',
-    ['1', '0', '2', 'undefined'], 0,
-    'addEventListener에 전달한 함수가 클릭 시 호출되어 count가 1이 돼요.',
-    '6주차 · 이벤트 리스너', { cat: 'predict', tag: '리스너', code: 'let count = 0;\nbtn.addEventListener("click", () => {\n  count++;\n  console.log(count);\n});\n// btn을 한 번 클릭' });
+  mc(U, '이벤트의 디폴트 행동을 취소하는 방법 두 가지는?',
+    ['이벤트 리스너에서 false 리턴 / 이벤트 객체의 preventDefault() 호출', 'return true / stopDefault()', 'cancel() / break', 'event.stop() / exit()'], 0,
+    '이벤트 객체의 cancelable 프로퍼티가 true인 경우만 취소할 수 있어요.',
+    '7주차 · 이벤트의 디폴트 행동 취소', { tag: '디폴트 행동' });
 
-  mc(U, 'HTML 속성 방식 onclick="f()"와 onclick="f"의 차이는?',
-    ['f()는 함수를 호출하는 코드, f는 사용할 수 없다 (속성에는 코드를 쓴다)', '둘 다 동일하다', 'f가 올바르고 f()는 오류다', '둘 다 오류다'], 0,
-    'HTML 속성 방식은 문자열로 된 "코드"를 쓰므로 onclick="f()"처럼 호출식을 써요. 프로퍼티 방식은 btn.onclick = f 처럼 함수 참조를 대입해요.',
-    '6주차 · 리스너 등록', { tag: '리스너 등록' });
+  mc(U, '<a href="http://www.naver.com" onclick="return false">링크</a>를 클릭하면?',
+    ['페이지 이동이 일어나지 않는다', '네이버로 이동한다', '새 창이 열린다', '오류가 난다'], 0,
+    'onclick 리스너가 false를 리턴하면 디폴트 행동(페이지 이동)이 취소돼요. event.preventDefault()도 같은 효과예요.',
+    '7주차 · 이벤트의 디폴트 행동 취소', { cat: 'predict', tag: '디폴트 행동', code: '<a href="http://www.naver.com" onclick="return false">\n  이동 안되는 링크\n</a>' });
 
-  fb(U, '프로퍼티 방식으로 클릭 리스너를 등록하세요. (함수 참조를 대입)',
-    'function hello() { alert("hi"); }\nbtn.___ = hello;', ['onclick'], ['onclick', 'click', 'addEventListener', 'onClick()', 'on-click'],
-    '이벤트 프로퍼티는 on + 이벤트 이름이에요. btn.onclick = hello() 처럼 괄호를 붙이면 등록 시점에 바로 실행되니 참조만 대입하세요.',
-    '6주차 · 리스너 등록', { tag: '리스너 등록' });
+  fb(U, '체크박스가 클릭돼도 체크되지 않도록 하세요.',
+    'function noAction(e) {\n  e.___()\n}', ['preventDefault'], ['preventDefault', 'stopDefault', 'cancel', 'stopPropagation', 'return'],
+    'preventDefault()는 이벤트의 디폴트 행동을 강제로 취소해요. 예제 9-7의 "술" 체크박스는 체크되지 않아요.',
+    '7주차 · 예제 9-7', { tag: '디폴트 행동' });
+
+  mc(U, '<a onclick="return query()">에서 query()가 confirm() 결과를 return하면 "취소"를 눌렀을 때는?',
+    ['false가 리턴되어 링크 이동이 취소된다', 'true가 리턴되어 이동한다', '오류가 난다', '창이 닫힌다'], 0,
+    'confirm()은 확인이면 true, 취소이면 false를 리턴해요. 그 값을 그대로 return하면 false일 때 이동이 취소돼요.',
+    '7주차 · 예제 9-7', { tag: '디폴트 행동' });
+
+  // ── onload / Image ─────────────────────────
+  mc(U, 'onload 리스너가 호출되는 시점은?',
+    ['웹 페이지(문서) 또는 이미지의 로딩이 완료되었을 때', '페이지를 닫을 때', '키를 누를 때', '이미지를 클릭할 때'], 0,
+    '<body onload="init()">은 문서 전체가 로딩된 뒤 init()을 실행해요. 그래서 init() 안에서 getElementById로 태그를 안전하게 찾을 수 있어요.',
+    '7주차 · onload', { tag: 'onload' });
+
+  fb(U, '문서 로딩이 완료되면 실행되도록 window에 리스너를 등록하세요.',
+    'window.___ = function () {\n  tds = document.getElementsByTagName("td")\n}', ['onload'], ['onload', 'onready', 'onstart', 'oninit', 'onopen'],
+    '예제 9-21처럼 window.onload에 익명 함수를 대입하면 문서 로딩 완료 시 실행돼요.',
+    '7주차 · 예제 9-21', { tag: 'onload' });
+
+  mc(U, '예제 9-14에서 img.onload 리스너로 이미지의 width, height를 출력하는 이유는?',
+    ['새 이미지 로딩이 완료된 시점에 크기를 알 수 있기 때문', '이미지 크기는 CSS로만 알 수 있기 때문', 'onload가 클릭 이벤트이기 때문', '이미지를 삭제하기 위해'], 0,
+    'img.src를 바꾸면 로딩이 시작되고, 로딩이 끝나면 img.onload가 호출돼요. 그때 img.width, img.height를 읽어요.',
+    '7주차 · 예제 9-14', { tag: 'onload' });
+
+  or(U, 'new Image()로 이미지를 미리 로딩해 출력하는 순서대로 누르세요.',
+    null,
+    ['let img = new Image()', 'img.src = "banana.png"', 'myImg.src = img.src'], [],
+    '이미지 객체를 만들고(화면에는 안 나옴) → src를 지정해 로딩 → <img> 태그의 src에 대입해 출력해요.',
+    '7주차 · new Image()', { cat: 'quiz', tag: 'new Image()' });
+
+  mc(U, 'new Image()로 만든 이미지 객체는?',
+    ['생성만으로는 화면에 출력되지 않는다', '만들자마자 화면에 출력된다', 'body에 자동으로 추가된다', '오류가 난다'], 0,
+    '이미지를 미리 로딩해 두고, 필요할 때 <img> 태그의 src에 대입해 출력하는 데 써요.',
+    '7주차 · new Image()', { tag: 'new Image()' });
+
+  mc(U, 'files 배열의 이미지 8장을 new Image()로 미리 로딩하는 이유는?',
+    ['클릭해서 이미지를 바꿀 때 바로 보이도록 미리 로딩해 두기 위해', '이미지 크기를 줄이기 위해', '이미지를 삭제하기 위해', '서버에 업로드하기 위해'], 0,
+    '예제 9-15: imgs[i] = new Image(); imgs[i].src = files[i]; 로 로딩해 두고, 클릭 시 img.src = imgs[next].src로 바꿔요.',
+    '7주차 · 예제 9-15', { tag: 'new Image()' });
+
+  mc(U, 'next가 0~7을 돌도록 다음 인덱스를 처리하는 코드로 알맞은 것은? (imgs.length = 8)',
+    ['next++; next %= imgs.length', 'next--; next %= imgs.length', 'next = imgs.length', 'next += imgs.length'], 0,
+    '1 증가 후 길이로 나눈 나머지를 취하면 마지막 다음에 0으로 돌아와요.',
+    '7주차 · 예제 9-15', { cat: 'predict', tag: 'new Image()', code: 'let next = 7\nnext++\nnext %= 8\nconsole.log(next)' });
+
+  // ── 라디오 / 체크박스 / select ──────────────
+  fb(U, 'name이 "city"인 라디오 버튼들을 모두 가져오세요.',
+    'let kcity = document.___("city")', ['getElementsByName'], ['getElementsByName', 'getElementById', 'getElementsByTagName', 'getElementByName', 'querySelectorAll'],
+    '라디오 버튼은 같은 name을 가지므로 getElementsByName으로 컬렉션을 얻고 kcity[0], kcity[1]...로 접근해요.',
+    '7주차 · 라디오버튼', { tag: '라디오버튼' });
+
+  fb(U, '선택된 라디오 버튼을 찾으세요.',
+    'for (let i = 0; i < kcity.length; i++) {\n  if (kcity[i].___ == true)\n    found = kcity[i]\n}', ['checked'], ['checked', 'selected', 'value', 'active', 'on'],
+    '체크된 상태이면 checked 프로퍼티가 true예요. 그 객체의 value로 선택한 값을 알 수 있어요.',
+    '7주차 · 예제 9-17', { tag: '라디오버튼' });
+
+  mc(U, '체크박스를 체크했을 때 합계가 늘어나고 해제하면 줄어들게 하는 코드는?',
+    ['if (cBox.checked) sum += parseInt(cBox.value); else sum -= parseInt(cBox.value)', 'sum += cBox.value 만 실행', 'sum = cBox.checked', 'if (cBox.value) sum++'], 0,
+    '체크박스의 value는 문자열이라 parseInt로 정수로 바꿔서 더해요. onclick="calc(this)"처럼 this로 클릭된 체크박스를 넘겨요.',
+    '7주차 · 예제 9-18', { tag: '체크박스' });
+
+  mc(U, 'select 객체의 설명으로 알맞은 것은?',
+    ['<select> 태그로 만든 콤보박스이고, 옵션 아이템은 <option> 태그의 option 객체다', '<option>이 콤보박스를 만든다', '<input type="select">로 만든다', '옵션은 선택할 수 없다'], 0,
+    'sel.options[인덱스]로 option 객체에 접근하고, option의 value 속성으로 값을 얻어요.',
+    '7주차 · select 객체', { tag: 'select' });
+
+  fb(U, '선택된 옵션의 인덱스를 알아내세요.',
+    'let sel = document.getElementById("fruits")\nlet index = sel.___', ['selectedIndex'], ['selectedIndex', 'selected', 'index', 'selectedOption', 'checked'],
+    'select 객체의 selectedIndex는 선택된 옵션의 인덱스예요. 대입하면 그 옵션이 선택돼요(sel.selectedIndex = 2).',
+    '7주차 · select 객체', { tag: 'select' });
+
+  mc(U, '<select id="fruits">에서 "바나나"(두 번째 옵션)가 selected일 때 sel.selectedIndex는?',
+    ['1', '2', '0', '"바나나"'], 0,
+    '옵션 인덱스는 0부터 시작해요. 딸기 0, 바나나 1, 사과 2예요. sel.selectedIndex = 2를 대입하면 "사과"가 선택돼요.',
+    '7주차 · select 객체', { cat: 'predict', tag: 'select', code: '<select id="fruits">\n  <option value="1">딸기</option>\n  <option value="2" selected>바나나</option>\n  <option value="3">사과</option>\n</select>' });
+
+  fb(U, '선택된 옵션의 value로 이미지를 바꾸세요.',
+    'img.src = sel.options[sel.___].value', ['selectedIndex'], ['selectedIndex', 'selected', 'index', 'value', 'checked'],
+    '선택된 옵션 인덱스로 options[]에 접근해서 value를 얻어요.',
+    '7주차 · 예제 9-19', { tag: 'select' });
+
+  mc(U, '<select onchange="drawImage()">에서 onchange는 언제 호출되는가?',
+    ['선택된 옵션이 변경될 때', '문서가 로딩될 때', '옵션을 클릭하기만 해도 항상', '폼이 전송될 때'], 0,
+    'select 객체의 onchange 리스너는 선택된 옵션이 바뀌면 호출돼요.',
+    '7주차 · select와 onchange', { tag: 'onchange' });
+
+  // ── 키 이벤트 ──────────────────────────────
+  mc(U, 'onkeydown, onkeypress, onkeyup의 설명으로 알맞은 것은?',
+    ['keydown은 모든 키가 눌러질 때, keypress는 문자 키·Enter·Space·Esc일 때, keyup은 키를 뗄 때', 'keydown은 키를 뗄 때, keyup은 누를 때', 'keypress는 모든 키에 대해 호출', 'keyup은 문자 키만 호출'], 0,
+    'F1, Shift, PgDn, Del, Ins 같은 문자 키가 아닌 키는 keypress가 호출되지 않아요.',
+    '7주차 · 키 이벤트', { tag: '키 이벤트' });
+
+  mc(U, 'Shift 키를 눌렀을 때 호출되는 리스너는?',
+    ['onkeydown과 onkeyup (onkeypress는 호출되지 않음)', 'onkeypress만', '세 가지 모두', '아무것도 호출되지 않음'], 0,
+    'Shift는 문자 키가 아니므로 keypress는 호출되지 않아요.',
+    '7주차 · 키 이벤트', { tag: '키 이벤트' });
+
+  mc(U, '키 이벤트 객체에서 눌러진 키의 이름은 e.key, 물리적 키 코드는 어떤 프로퍼티로 알까?',
+    ['e.code', 'e.type', 'e.target', 'e.value'], 0,
+    '예제 9-20은 e.key와 e.code를 출력해요. 방향키는 e.key가 "ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"예요.',
+    '7주차 · 예제 9-20', { tag: '키 이벤트' });
+
+  fb(U, '아래 방향키를 눌렀을 때 셀을 한 줄(3칸) 아래로 이동하세요.',
+    'window.onkeydown = function (e) {\n  switch (e.___) {\n    case "___":\n      index += 3\n      break\n  }\n}', ['key', 'ArrowDown'], ['key', 'ArrowDown', 'ArrowUp', 'code', 'Down'],
+    'e.key가 "ArrowDown"이면 3×3 표에서 인덱스를 3 늘려요. 위는 -3, 왼쪽은 --, 오른쪽은 ++ 예요.',
+    '7주차 · 예제 9-21', { tag: '키 이벤트' });
+
+  mc(U, '3×3 표(셀 인덱스 0~8)에서 index가 4일 때 ArrowRight를 누르면? (오른쪽 끝이면 이동하지 않음: index%3 == 2)',
+    ['index가 5가 된다', 'index가 4로 유지된다', 'index가 7이 된다', 'index가 3이 된다'], 0,
+    '4%3은 1이라 오른쪽 끝이 아니므로 index++가 실행돼요. 반대로 index가 5이면 5%3 == 2라 이동하지 않아요.',
+    '7주차 · 예제 9-21', { cat: 'predict', tag: '키 이벤트', code: 'let index = 4\nif (index % 3 == 2) {\n  // 이동 안 함\n} else {\n  index++\n}\nconsole.log(index)' });
+
+  // ── onreset / onsubmit ─────────────────────
+  mc(U, 'onreset과 onsubmit 리스너를 어디에 달아야 할까?',
+    ['<form> 태그', '<input type="submit"> 태그', '<body> 태그', '<script> 태그'], 0,
+    '<form onreset="..." onsubmit="..."> 형태로 폼 태그에 작성해요.',
+    '7주차 · onreset과 onsubmit', { tag: 'onsubmit' });
+
+  mc(U, '<form onsubmit="return false">에서 submit 버튼을 누르면?',
+    ['폼이 전송되지 않는다', '폼이 전송된다', '폼이 초기화된다', '오류가 난다'], 0,
+    'onsubmit 리스너가 false를 리턴하면 폼을 전송하지 않아요. onreset도 false를 리턴하면 폼이 초기화되지 않아요.',
+    '7주차 · onreset과 onsubmit', { cat: 'predict', tag: 'onsubmit', code: '<form onsubmit="return false">\n  <input type="submit">\n</form>', x: { 2: 'reset이 아니라 submit이에요.' } });
+
+  mc(U, '<form onreset="return false">에서 reset 버튼을 누르면?',
+    ['폼이 초기화되지 않는다', '폼이 초기화된다', '폼이 전송된다', '페이지가 닫힌다'], 0,
+    'onreset이 false를 리턴하면 reset의 디폴트 행동(초기화)이 취소돼요.',
+    '7주차 · onreset과 onsubmit', { cat: 'predict', tag: 'onreset', code: '<form onreset="return false">\n  <input type="reset">\n</form>' });
 })();

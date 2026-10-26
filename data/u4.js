@@ -1,139 +1,215 @@
-/* 단원 4 — 함수 (Ch 5) */
+/* 단원 4 — 함수 (Ch 5: 5-1 함수의 기본 형태 / 5-2 함수 고급) — 슬라이드 범위만 */
 (function () {
   var U = 'u4';
 
-  mc(U, '자바스크립트에서 함수를 정의하는 기본 키워드는?',
-    ['function', 'func', 'def', 'method'], 0,
-    'function 키워드 + 이름 + (매개변수) + { 본문 } 형태로 정의해요.',
-    '5주차 · 함수 선언', { tag: '함수 선언' });
+  // ── 5-1 기본 형태 ─────────────────────────
+  mc(U, '함수에 대한 설명으로 맞는 것은?',
+    ['코드의 집합을 나타내는 자료형이다', '반드시 이름이 있어야 한다', '변수에 담을 수 없다', '호출은 한 번만 할 수 있다'], 0,
+    '함수는 코드의 집합을 나타내는 자료형이에요. 변수에 담을 수 있고 여러 번 호출할 수 있어요.',
+    '5주차 · 함수의 기본 형태', { tag: '함수 개념' });
 
-  fb(U, '두 수를 더해 돌려주는 함수를 완성하세요.',
-    '___ add(a, b) {\n  ___ a + b;\n}\nconsole.log(add(2, 3));', ['function', 'return'], ['function', 'return', 'def', 'print', 'func'],
-    'function으로 선언하고 return으로 값을 돌려줘요. return이 없으면 undefined를 반환해요.',
-    '5주차 · 함수 선언', { tag: 'return', exec: 'function add(a, b) { return a + b; } console.log(add(2, 3))' });
+  mc(U, '익명 함수를 만드는 올바른 코드는?',
+    ['const 함수 = function () { }', 'function () { } = 함수', 'const 함수 = () function { }', 'function 함수 => { }'], 0,
+    '이름 없는 function () { }을 변수에 넣어 만들면 익명 함수예요. 변수 이름 뒤에 ()를 붙여 호출해요.',
+    '5주차 · 익명 함수', { tag: '익명 함수' });
 
-  mc(U, 'return이 없는 함수를 호출한 결과값은?',
-    ['undefined', 'null', '0', '오류'], 0,
-    'return 문이 없거나 값 없이 return만 쓰면 undefined가 반환돼요.',
-    '5주차 · 반환값', { cat: 'predict', tag: 'return', code: 'function hi() {\n  let a = 1;\n}\nconsole.log(hi());', run: 'function hi(){ let a = 1; } console.log(hi());' });
+  mc(U, '실행 결과 마지막 줄(typeof 함수)의 출력은?',
+    ['"function"', '"object"', '"undefined"', '"string"'], 0,
+    '함수는 자료형이라 typeof로 확인하면 "function"이 나와요. 함수 자체를 출력하는 것도 가능해요.',
+    '5주차 · 소스 5-1-1', { cat: 'predict', tag: 'typeof', code: 'const 함수 = function () {\n  console.log("실행")\n}\nconsole.log(typeof 함수)', run: 'const f = function(){ console.log("실행") }; console.log(typeof f)' });
 
-  mc(U, '함수 선언문은 선언 위치보다 앞에서 호출할 수 있다. 이 현상은?',
-    ['호이스팅(hoisting)', '클로저', '콜백', '바인딩'], 0,
-    '함수 선언문은 코드 실행 전에 끌어올려져(호이스팅) 선언 전에도 호출할 수 있어요.',
-    '5주차 · 호이스팅', { tag: '호이스팅' });
+  fb(U, '이름을 붙여 선언적 함수를 만드세요.',
+    '___ 함수() {\n  console.log("선언적 함수")\n}\n함수()', ['function'], ['function', 'const', 'let', 'func', 'def'],
+    '선언적 함수는 function 키워드 뒤에 이름을 붙여 만들어요.',
+    '5주차 · 선언적 함수', { tag: '선언적 함수', exec: 'function 함수(){ console.log("선언적 함수") } 함수()' });
 
-  mc(U, '실행 결과는?',
-    ['5', 'undefined', '오류', 'null'], 0,
-    '함수 선언문은 호이스팅되므로 선언 전에 호출해도 정상 동작해요.',
-    '5주차 · 호이스팅', { cat: 'predict', tag: '호이스팅', code: 'console.log(five());\nfunction five() {\n  return 5;\n}', run: 'console.log(five()); function five(){ return 5; }' });
+  fb(U, '함수를 정의하고 리턴값을 돌려주세요.',
+    'function f(x) {\n  ___ x * x\n}\nconsole.log(f(3))', ['return'], ['return', 'print', 'break', 'output', 'yield'],
+    'return 뒤의 값이 함수를 호출한 곳으로 돌아와요. f(3)은 9.',
+    '5주차 · 소스 5-1-3', { tag: 'return', exec: 'function f(x){ return x * x } console.log(f(3))' });
 
-  mc(U, '함수 표현식(const f = function(){})을 선언 전에 호출하면?',
-    ['오류가 발생한다', '정상 실행된다', 'undefined가 반환된다', '무시된다'], 0,
-    'const/let으로 선언한 함수 표현식은 선언 전에 접근할 수 없어요(TDZ). 호이스팅은 함수 "선언문"에만 해당해요.',
-    '5주차 · 함수 표현식', { cat: 'predict', tag: '함수 표현식', code: 'console.log(f());\nconst f = function () {\n  return 1;\n};', run: 'console.log(f()); const f = function(){ return 1; };' });
+  mc(U, 'f(3)의 결과는?',
+    ['9', '6', '3', 'undefined'], 0,
+    'return x * x 이므로 3 × 3 = 9예요.',
+    '5주차 · 소스 5-1-3', { cat: 'predict', tag: 'return', code: 'function f(x) {\n  return x * x\n}\nconsole.log(f(3))', run: 'function f(x){ return x * x } console.log(f(3))' });
 
-  mc(U, '화살표 함수의 올바른 문법은?',
-    ['const sq = x => x * x;', 'const sq = x -> x * x;', 'const sq = (x) = x * x;', 'const sq => x * x;'], 0,
-    '(매개변수) => 식 형태예요. 본문이 식 하나면 중괄호와 return을 생략할 수 있어요.',
+  mc(U, '리턴값이 없는 함수(prompt()와 달리 function 함수():void)의 반환 타입 표기는?',
+    ['void', 'string', 'number', 'null'], 0,
+    '슬라이드에서 prompt()는 string을 리턴하고, 리턴값이 없는 사용자 정의 함수는 void로 나타내요.',
+    '5주차 · 매개변수와 리턴값', { tag: '리턴값' });
+
+  mc(U, '윤년 조건으로 올바르지 않은 것은?',
+    ['100으로 나누어 떨어지는 해는 무조건 윤년', '4로 나누어 떨어지는 해는 윤년', '100으로 나누어 떨어지는 해는 윤년이 아님', '400으로 나누어 떨어지는 해는 윤년'], 0,
+    '4의 배수는 윤년, 그중 100의 배수는 윤년이 아님, 그중 400의 배수는 다시 윤년이에요.',
+    '5주차 · 윤년 확인 예제', { tag: '윤년' });
+
+  mc(U, 'isLeapYear(1900)의 결과는?',
+    ['false', 'true', 'undefined', '오류'], 0,
+    '1900은 4로 나누어 떨어지지만 100으로도 나누어 떨어지고 400으로는 안 나누어 떨어져서 윤년이 아니에요.',
+    '5주차 · 소스 5-1-4', { cat: 'predict', tag: '윤년', code: 'function isLeapYear(year) {\n  return (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0)\n}\nconsole.log(isLeapYear(1900))', run: 'function isLeapYear(year){ return (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0) } console.log(isLeapYear(1900))' });
+
+  mc(U, 'isLeapYear(2000)의 결과는?',
+    ['true', 'false', 'undefined', '오류'], 0,
+    '2000은 100으로 나누어 떨어지지만 400으로도 나누어 떨어져서 윤년이에요.',
+    '5주차 · 소스 5-1-4', { cat: 'predict', tag: '윤년', code: 'function isLeapYear(year) {\n  return (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0)\n}\nconsole.log(isLeapYear(2000))', run: 'function isLeapYear(year){ return (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0) } console.log(isLeapYear(2000))' });
+
+  fb(U, '배열의 최솟값을 구하는 함수를 완성하세요.',
+    'function min(array) {\n  let output = array[0]\n  for (const item of array) {\n    if (output ___ item) {\n      output = item\n    }\n  }\n  return output\n}', ['>'], ['>', '<', '===', '<=', '!=='],
+    'output이 item보다 크면 output을 더 작은 item으로 바꿔요. 이 과정을 반복하면 최솟값이 남아요.',
+    '5주차 · 소스 5-1-6', { tag: '최솟값', exec: 'function min(array){ let output = array[0]; for (const item of array){ if (output > item) { output = item } } return output } console.log(min([52,273,32]))' });
+
+  mc(U, 'min([52, 273, 32, 103, 275, 24, 57])의 결과는?',
+    ['24', '52', '275', '32'], 0,
+    '배열에서 가장 작은 값은 24예요.',
+    '5주차 · 소스 5-1-6', { cat: 'predict', tag: '최솟값', code: 'const testArray = [52, 273, 32, 103, 275, 24, 57]\nconsole.log(min(testArray))   // min은 최솟값을 구하는 함수', run: 'console.log(Math.min(52,273,32,103,275,24,57))' });
+
+  // ── 나머지 매개변수·전개 연산자 ─────────────
+  mc(U, '호출할 때 매개변수의 개수가 고정되지 않은 함수를 만들 때 쓰는 문법은?',
+    ['나머지 매개변수(rest parameter)', '기본 매개변수', '콜백 매개변수', '전역 매개변수'], 0,
+    'function 함수(...items) { } 처럼 앞에 ...을 붙이면 넘어온 인수가 모두 배열로 모여요.',
+    '5주차 · 나머지 매개변수', { tag: '나머지 매개변수' });
+
+  fb(U, '나머지 매개변수를 선언하세요.',
+    'function sample(___items) {\n  console.log(items)\n}\nsample(1, 2, 3)', ['...'], ['...', '..', '*', '&', '$'],
+    '...items로 선언하면 items가 배열이 되어 [1, 2, 3]이 출력돼요.',
+    '5주차 · 소스 5-1-7', { tag: '나머지 매개변수', exec: 'function sample(...items){ console.log(items) } sample(1,2,3)' });
+
+  mc(U, 'sample(1, 2, 3, 4)를 호출했을 때 console.log(a, b, c)의 출력은?',
+    ['1 2 [ 3, 4 ]', '1 2 3 4', '[ 1, 2 ] [ 3, 4 ]', '1 2 3'], 0,
+    '나머지 매개변수 c는 앞의 일반 매개변수 a, b를 제외한 나머지를 배열로 받아요.',
+    '5주차 · 소스 5-1-9', { cat: 'predict', tag: '나머지 매개변수', code: 'function sample(a, b, ...c) {\n  console.log(a, b, c)\n}\nsample(1, 2, 3, 4)', run: 'function sample(a, b, ...c){ console.log(a, b, c) } sample(1,2,3,4)' });
+
+  mc(U, 'sample(1, 2)처럼 인수가 2개일 때 위 함수의 c 값은?',
+    ['빈 배열 [ ]', 'undefined', 'null', '오류'], 0,
+    '나머지 매개변수에 들어올 값이 없으면 빈 배열이 돼요.',
+    '5주차 · 소스 5-1-9', { cat: 'predict', tag: '나머지 매개변수', code: 'function sample(a, b, ...c) {\n  console.log(c)\n}\nsample(1, 2)' });
+
+  mc(U, '매개변수로 들어온 값이 배열인지 확인할 때 쓰는 메소드는?',
+    ['Array.isArray()', 'typeof', 'instanceArray()', 'isArray.check()'], 0,
+    'typeof로는 배열을 확인할 수 없어요(배열도 "object"). Array.isArray()를 사용해요.',
+    '5주차 · Array.isArray()', { tag: 'Array.isArray', x: { 1: 'typeof 배열은 "object"가 나와서 배열인지 구분할 수 없어요.' } });
+
+  mc(U, 'min(first, ...rests)에서 min([52, 273, 32])처럼 배열을 넣으면 first는?',
+    ['배열 전체 [52, 273, 32]', '52', 'undefined', '[52]'], 0,
+    '배열 하나를 통째로 넘기면 first가 그 배열이고 rests는 빈 배열이에요. 그래서 Array.isArray(first)로 분기해요.',
+    '5주차 · 소스 5-1-10', { tag: 'Array.isArray' });
+
+  mc(U, '전개 연산자를 쓰지 않은 sample(array)의 출력은? (array = [1, 2, 3, 4])',
+    ['[ [ 1, 2, 3, 4 ] ]', '[ 1, 2, 3, 4 ]', '1 2 3 4', '[ ]'], 0,
+    '배열이 요소 하나로 들어와 items = [[1, 2, 3, 4]]이 돼요. sample(...array)로 전개해야 [1, 2, 3, 4]가 나와요.',
+    '5주차 · 소스 5-1-11', { cat: 'predict', tag: '전개 연산자', code: 'function sample(...items) {\n  console.log(items)\n}\nconst array = [1, 2, 3, 4]\nsample(array)', run: 'function sample(...items){ console.log(items) } const array=[1,2,3,4]; sample(array)' });
+
+  mc(U, '전개 연산자를 쓴 sample(...array)의 출력은? (array = [1, 2, 3, 4])',
+    ['[ 1, 2, 3, 4 ]', '[ [ 1, 2, 3, 4 ] ]', '1', '오류'], 0,
+    '...array가 배열을 하나하나 풀어서 숫자 4개가 따로 매개변수로 들어가요.',
+    '5주차 · 소스 5-1-11', { cat: 'predict', tag: '전개 연산자', code: 'function sample(...items) {\n  console.log(items)\n}\nconst array = [1, 2, 3, 4]\nsample(...array)', run: 'function sample(...items){ console.log(items) } const array=[1,2,3,4]; sample(...array)' });
+
+  // ── 5-2 콜백 · 화살표 · 타이머 ─────────────
+  mc(U, '콜백(callback) 함수란?',
+    ['매개변수로 전달하는 함수', '자기 자신을 호출하는 함수', '리턴값이 없는 함수', '이름이 없는 함수'], 0,
+    '자바스크립트는 함수도 하나의 자료형이라 매개변수로 전달할 수 있어요. 이렇게 전달하는 함수가 콜백 함수예요.',
+    '5주차 · 콜백 함수', { tag: '콜백' });
+
+  or(U, 'callThreeTimes(print)를 호출했을 때 출력 순서대로 누르세요.',
+    'function callThreeTimes(callback) {\n  for (let i = 0; i < 3; i++) {\n    callback(i)\n  }\n}\nfunction print(i) {\n  console.log(`${i}번째 함수 호출`)\n}\ncallThreeTimes(print)',
+    ['0번째 함수 호출', '1번째 함수 호출', '2번째 함수 호출'], ['3번째 함수 호출'],
+    'i가 0, 1, 2일 때 콜백이 3번 호출돼요. 3은 조건(i < 3)에 맞지 않아 호출되지 않아요.',
+    '5주차 · 소스 5-2-1', { tag: '콜백', run: 'function callThreeTimes(callback){ for (let i = 0; i < 3; i++) { callback(i) } } function print(i){ console.log(`${i}번째 함수 호출`) } callThreeTimes(print)' });
+
+  mc(U, '콜백 함수로 선언적 함수 대신 익명 함수를 넘기면?',
+    ['함수 이름 없이 그 자리에서 바로 만들어 전달할 수 있다', '오류가 난다', '호출되지 않는다', '전역 함수가 된다'], 0,
+    'callThreeTimes(function (i) { ... })처럼 호출 위치에서 바로 익명 함수를 만들어 넘길 수 있어요.',
+    '5주차 · 소스 5-2-2', { tag: '콜백' });
+
+  fb(U, '배열의 요소를 하나씩 꺼내 콜백을 호출하는 메소드를 채우세요.',
+    'const numbers = [273, 52, 103]\nnumbers.___(function (value, index, array) {\n  console.log(`${index}번째 요소 : ${value}`)\n})', ['forEach'], ['forEach', 'map', 'filter', 'each', 'loop'],
+    'forEach는 배열 요소를 사용해 콜백 함수를 호출해요. 콜백의 매개변수는 (value, index, array) 순서예요.',
+    '5주차 · forEach()', { tag: 'forEach', exec: 'const numbers=[273,52,103]; numbers.forEach(function(value,index,array){ console.log(`${index}번째 요소 : ${value}`) })' });
+
+  mc(U, 'forEach 콜백 function (value, index, array)에서 첫 번째 매개변수 value는?',
+    ['현재 요소의 값', '현재 요소의 인덱스', '배열 전체', '배열의 길이'], 0,
+    '순서는 value(값), index(위치), array(배열 전체)예요.',
+    '5주차 · forEach()', { tag: 'forEach' });
+
+  fb(U, 'map()으로 모든 값을 제곱한 새 배열을 만드세요.',
+    'let numbers = [273, 52, 103, 32, 57]\nnumbers = numbers.___(function (value) {\n  return value * value\n})', ['map'], ['map', 'forEach', 'filter', 'reduce', 'push'],
+    'map은 콜백이 리턴한 값들로 새로운 배열을 만들어요.',
+    '5주차 · map()', { tag: 'map', exec: 'let numbers=[273,52]; numbers = numbers.map(function(value){ return value*value }); console.log(numbers)' });
+
+  mc(U, '[1, 2, 3].map(value => value * value)의 결과는?',
+    ['[ 1, 4, 9 ]', '[ 1, 2, 3 ]', '14', '[ 2, 4, 6 ]'], 0,
+    'map은 각 값을 제곱해서 새 배열 [1, 4, 9]를 만들어요.',
+    '5주차 · map()', { cat: 'predict', tag: 'map', code: 'const result = [1, 2, 3].map(value => value * value)\nconsole.log(result)', run: 'console.log([1,2,3].map(value => value * value))' });
+
+  mc(U, 'filter() 메소드가 새 배열에 담는 요소는?',
+    ['콜백이 true를 리턴한 요소', '콜백이 false를 리턴한 요소', '모든 요소', '첫 번째 요소 하나'], 0,
+    'filter는 콜백이 true를 리턴하는 것들만 모아서 새로운 배열을 만들어요.',
+    '5주차 · filter()', { tag: 'filter' });
+
+  mc(U, '짝수만 추출한 evenNumbers의 값은?',
+    ['[ 0, 2, 4 ]', '[ 1, 3, 5 ]', '[ 0, 1, 2, 3, 4, 5 ]', '[ 2, 4 ]'], 0,
+    'value % 2 === 0이 true인 0, 2, 4만 남아요. 0도 짝수라는 점을 놓치지 마세요!',
+    '5주차 · 소스 5-2-5', { cat: 'predict', tag: 'filter', code: 'const numbers = [0, 1, 2, 3, 4, 5]\nconst evenNumbers = numbers.filter(function (value) {\n  return value % 2 === 0\n})\nconsole.log(evenNumbers)', run: 'console.log([0,1,2,3,4,5].filter(function(v){ return v % 2 === 0 }))' });
+
+  mc(U, '[273, 25, 75, 52, 103, 32, 57, 24, 76]에서 100 이하의 수만 filter로 추출한 결과는?',
+    ['[ 25, 75, 52, 32, 57, 24, 76 ]', '[ 273, 103 ]', '[ 25, 75, 52, 32, 57, 24 ]', '[ 273, 25, 75, 52 ]'], 0,
+    'value <= 100이 true인 값만 남아요. 273과 103은 제외돼요.',
+    '5주차 · 확인 문제', { cat: 'predict', tag: 'filter', code: 'let numbers = [273, 25, 75, 52, 103, 32, 57, 24, 76]\nnumbers = numbers.filter((value) => value <= 100)\nconsole.log(numbers)', run: 'let n=[273,25,75,52,103,32,57,24,76]; console.log("[ "+n.filter((v)=>v<=100).join(", ")+" ]")' });
+
+  mc(U, '화살표 함수의 올바른 형태는?',
+    ['(매개변수) => 리턴값', '(매개변수) -> 리턴값', 'function => (매개변수)', '=> (매개변수) 리턴값'], 0,
+    'function 키워드 대신 화살표(=>)를 쓰는 간단한 함수예요. 본문이 식 하나면 그 값이 곧 리턴값이에요.',
     '5주차 · 화살표 함수', { tag: '화살표 함수' });
 
-  fb(U, '화살표 함수를 완성하세요.',
-    'const double = (n) ___ n * 2;\nconsole.log(double(4));', ['=>'], ['=>', '->', '=', '==>', ':'],
-    '화살표는 =>예요. 본문이 식 하나이므로 return과 중괄호 생략이 가능해요.',
+  fb(U, '화살표 함수로 바꿔 쓰세요.',
+    'const double = (n) ___ n * 2\nconsole.log(double(4))', ['=>'], ['=>', '->', '=', '==>', ':'],
+    '(매개변수) => 리턴값 형태예요. double(4)는 8.',
     '5주차 · 화살표 함수', { tag: '화살표 함수', exec: 'const double = (n) => n * 2; console.log(double(4))' });
 
-  mc(U, '화살표 함수에서 본문을 { }로 감싸고 return을 쓰지 않으면 반환값은?',
-    ['undefined', '식의 결과', 'null', '오류'], 0,
-    '중괄호를 쓰면 일반 함수 본문이므로 return을 명시해야 해요. 안 쓰면 undefined.',
-    '5주차 · 화살표 함수', { cat: 'predict', tag: '화살표 함수', code: 'const f = x => { x * 2 };\nconsole.log(f(3));', run: 'const f = x => { x * 2 }; console.log(f(3));' });
+  or(U, '메소드 체이닝 결과를 출력 순서대로 누르세요.',
+    'let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\nnumbers\n  .filter((value) => value % 2 === 0)\n  .map((value) => value * value)\n  .forEach((value) => {\n    console.log(value)\n  })',
+    ['0', '4', '16', '36', '64'], ['1', '9', '25'],
+    '짝수(0, 2, 4, 6, 8)만 filter로 남기고, map으로 제곱한 뒤 forEach로 출력해요.',
+    '5주차 · 소스 5-2-6', { tag: '메소드 체이닝', run: 'let numbers=[0,1,2,3,4,5,6,7,8,9]; numbers.filter((v)=>v%2===0).map((v)=>v*v).forEach((v)=>{ console.log(v) })' });
 
-  mc(U, '기본 매개변수(default parameter)가 적용된 결과는?',
-    ['"안녕, 손님"', '"안녕, undefined"', '"안녕, "', '오류'], 0,
-    '인자가 전달되지 않거나 undefined면 기본값이 사용돼요.',
-    '5주차 · 기본 매개변수', { cat: 'predict', tag: '기본값', code: 'function hi(name = "손님") {\n  return "안녕, " + name;\n}\nconsole.log(hi());', run: 'function hi(name = "손님"){ return "안녕, " + name; } console.log(hi());' });
+  mc(U, '지정한 시간 "이후에 한 번만" 함수를 호출하는 타이머 함수는?',
+    ['setTimeout(함수, 시간)', 'setInterval(함수, 시간)', 'clearTimeout(함수)', 'setTime(함수, 시간)'], 0,
+    'setTimeout은 한 번, setInterval은 지정한 시간마다 반복해서 호출해요.',
+    '5주차 · 타이머 함수', { tag: '타이머' });
 
-  mc(U, '함수 호출 시 인자를 부족하게 넘기면 남은 매개변수의 값은?',
-    ['undefined', 'null', '0', '오류가 발생한다'], 0,
-    '자바스크립트는 인자 개수를 검사하지 않아요. 부족한 매개변수는 undefined, 남는 인자는 무시돼요.',
-    '5주차 · 인자와 매개변수', { tag: '인자', x: { 1: '1 + undefined는 NaN이에요. 출력은 NaN.' } });
+  mc(U, 'setTimeout(함수, 1 * 1000)에서 시간 단위는?',
+    ['밀리초(ms) — 1000이면 1초', '초(s) — 1000이면 1000초', '분', '마이크로초'], 0,
+    '시간은 밀리초 단위예요. 그래서 1 * 1000으로 쓰면 1초예요.',
+    '5주차 · 소스 5-2-7', { tag: '타이머' });
 
-  mc(U, '위 문제 f(1)의 출력 결과는?',
-    ['NaN', 'undefined', '1', '오류'], 0,
-    '1 + undefined = NaN(Not a Number)이에요.',
-    '5주차 · 인자와 매개변수', { cat: 'predict', tag: '인자', code: 'function f(a, b) {\n  return a + b;\n}\nconsole.log(f(1));', run: 'function f(a, b){ return a + b; } console.log(f(1));' });
+  fb(U, 'setInterval을 종료하는 함수를 채우세요.',
+    'let id = setInterval(() => {\n  console.log("반복")\n}, 1000)\nsetTimeout(() => {\n  ___(id)\n}, 5000)', ['clearInterval'], ['clearInterval', 'clearTimeout', 'stopInterval', 'clear', 'removeInterval'],
+    'setInterval이 돌려준 ID를 clearInterval(ID)에 넣으면 종료돼요. (setTimeout은 clearTimeout)',
+    '5주차 · 소스 5-2-8', { tag: '타이머' });
 
-  fb(U, '나머지 매개변수로 모든 인자의 합을 구하세요.',
-    'function sum(___nums) {\n  let t = 0;\n  for (const n of nums) t += n;\n  return t;\n}\nconsole.log(sum(1, 2, 3));', ['...'], ['...', '..', '*', '&', '$'],
-    '...nums(rest parameter)는 남은 인자를 배열로 모아요.',
-    '5주차 · rest 매개변수', { tag: 'rest', exec: 'function sum(...nums){ let t = 0; for (const n of nums) t += n; return t; } console.log(sum(1,2,3))' });
+  // ── 익명 함수 vs 선언적 함수 ────────────────
+  mc(U, '1번째 익명 함수를 만든 뒤 2번째 익명 함수를 다시 할당하고 호출하면 출력은?',
+    ['2번째 익명 함수입니다.', '1번째 익명 함수입니다.', '둘 다 출력된다', '오류'], 0,
+    '익명 함수는 코드가 해당 줄을 읽을 때 생성돼요. 두 번째 할당이 첫 번째를 덮어써서 2번째가 호출돼요.',
+    '5주차 · 소스 5-2-14', { cat: 'predict', tag: '익명 함수', code: 'let 익명함수\n익명함수 = function () {\n  console.log("1번째 익명 함수입니다.")\n}\n익명함수 = function () {\n  console.log("2번째 익명 함수입니다.")\n}\n익명함수()', run: 'let f; f = function(){ console.log("1번째 익명 함수입니다.") }; f = function(){ console.log("2번째 익명 함수입니다.") }; f()', x: {} });
 
-  mc(U, '스프레드 연산자 결과는?',
-    ['[1, 2, 3, 4]', '[[1, 2], 3, 4]', '[1, 2, [3, 4]]', '오류'], 0,
-    '...a가 배열 요소를 펼쳐서 새 배열에 넣어요.',
-    '5주차 · spread', { cat: 'predict', tag: 'spread', code: 'const a = [1, 2];\nconst b = [...a, 3, 4];\nconsole.log(b);', run: 'const a=[1,2]; const b=[...a,3,4]; console.log(JSON.stringify(b).replace(/,/g,", "));' });
+  mc(U, '선언적 함수 두 개(같은 이름)를 선언하고, 선언 코드보다 위에서 호출하면 출력은?',
+    ['2번째 선언적 함수입니다.', '1번째 선언적 함수입니다.', '오류 (아직 선언되지 않음)', '아무것도 출력되지 않는다'], 0,
+    '선언적 함수는 순차 실행 전에 먼저 생성돼요. 같은 이름이면 나중 것이 남아서 호출 위치와 상관없이 2번째가 실행돼요.',
+    '5주차 · 소스 5-2-15', { cat: 'predict', tag: '선언적 함수', code: '선언적함수()\n\nfunction 선언적함수 () {\n  console.log("1번째 선언적 함수입니다.")\n}\nfunction 선언적함수 () {\n  console.log("2번째 선언적 함수입니다.")\n}', run: '선언적함수(); function 선언적함수(){ console.log("2번째 선언적 함수입니다.") }' });
 
-  mc(U, '함수 안에서 바깥 함수의 변수를 기억하는 함수를 부르는 말은?',
-    ['클로저(closure)', '콜백', '재귀', '제너레이터'], 0,
-    '클로저는 함수가 자신이 선언된 환경(렉시컬 스코프)의 변수를 기억하고 접근하는 것이에요.',
-    '5주차 · 클로저', { tag: '클로저' });
+  mc(U, '익명 함수와 선언적 함수의 차이로 맞는 것은?',
+    ['선언적 함수는 순차 실행 전에 먼저 생성되고, 익명 함수는 해당 줄을 읽을 때 생성된다', '둘 다 해당 줄을 읽을 때 생성된다', '익명 함수가 먼저 생성된다', '둘 다 프로그램 시작 전에 생성된다'], 0,
+    '그래서 선언적 함수는 코드 위쪽에서 호출해도 되지만, 익명 함수는 변수에 할당된 이후에만 호출할 수 있어요.',
+    '5주차 · 좀 더 알아보기④', { tag: '익명 vs 선언적' });
 
-  mc(U, '실행 결과 마지막 줄의 출력은?',
-    ['3', '1', '0', 'undefined'], 0,
-    'counter가 클로저로 count를 유지해서 호출할 때마다 1씩 늘어나요. 세 번째 호출은 3.',
-    '5주차 · 클로저', { cat: 'predict', tag: '클로저', code: 'function make() {\n  let count = 0;\n  return () => ++count;\n}\nconst c = make();\nc(); c();\nconsole.log(c());', run: 'function make(){ let count = 0; return () => ++count; } const c = make(); c(); c(); console.log(c());' });
+  mc(U, '익명 함수 할당 후 같은 이름으로 선언적 함수를 만들고 호출하면 출력은?',
+    ['"익명 함수입니다."', '"선언적 함수입니다."', '둘 다', '오류'], 0,
+    '선언적 함수가 먼저 만들어지고, 이후 순차 실행에서 익명 함수가 같은 변수에 덮어써요. 그래서 마지막에 호출되는 건 익명 함수예요. (함수 = function ... 처럼 키워드 없이 할당한 경우)',
+    '5주차 · 소스 5-2-16', { cat: 'predict', tag: '익명 vs 선언적', code: '함수 = function () {\n  console.log("익명 함수입니다.")\n}\nfunction 함수 () {\n  console.log("선언적 함수입니다.")\n}\n함수()', run: '함수 = function(){ console.log("익명 함수입니다.") }; function 함수(){ console.log("선언적 함수입니다.") } 함수()' });
 
-  mc(U, '콜백 함수란?',
-    ['다른 함수의 인자로 전달되어 나중에 호출되는 함수', '자기 자신을 호출하는 함수', '반환값이 없는 함수', '전역에 선언된 함수'], 0,
-    '콜백은 인자로 전달돼 특정 시점(이벤트, 비동기 완료 등)에 실행되는 함수예요.',
-    '5주차 · 콜백', { tag: '콜백' });
-
-  mc(U, '즉시 실행 함수(IIFE)의 올바른 형태는?',
-    ['(function () { ... })();', 'function () { ... }();', '(function () { ... });', 'function() => { ... }'], 0,
-    '함수를 괄호로 감싸 표현식으로 만든 뒤 ()로 바로 호출해요.',
-    '5주차 · IIFE', { tag: 'IIFE', x: { 1: '괄호 없이는 함수 선언문으로 해석돼 문법 오류가 나요.', 2: '호출 () 이 빠졌어요.' } });
-
-  mc(U, '결과는?',
-    ['120', '24', '5', '오류'], 0,
-    '재귀: f(5) = 5 × f(4) = 5×4×3×2×1 = 120. 종료 조건(n<=1)이 꼭 필요해요.',
-    '5주차 · 재귀', { cat: 'predict', tag: '재귀', code: 'function f(n) {\n  if (n <= 1) return 1;\n  return n * f(n - 1);\n}\nconsole.log(f(5));', run: 'function f(n){ if (n <= 1) return 1; return n * f(n - 1); } console.log(f(5));' });
-
-  mc(U, 'typeof 연산자로 함수를 확인한 결과는?',
-    ['"function"', '"object"', '"undefined"', '"method"'], 0,
-    '함수는 객체지만 typeof는 "function"을 반환해요.',
-    '5주차 · 함수는 값', { cat: 'predict', tag: 'typeof', code: 'function a() {}\nconsole.log(typeof a);', run: 'function a(){} console.log(typeof a);' });
-
-  mc(U, 'map()의 결과는?',
-    ['[2, 4, 6]', '[1, 2, 3]', '6', '[1, 4, 9]'], 0,
-    'map은 각 요소에 콜백을 적용해 새 배열을 만들어요. 원본은 변하지 않아요.',
-    '5주차 · 고차 함수', { cat: 'predict', tag: 'map', code: 'const r = [1, 2, 3].map(x => x * 2);\nconsole.log(r);', run: 'console.log(JSON.stringify([1,2,3].map(x=>x*2)).replace(/,/g,", "))' });
-
-  mc(U, 'filter()의 결과는?',
-    ['[2, 4]', '[1, 3]', '[1, 2, 3, 4]', '2'], 0,
-    'filter는 콜백이 true를 반환한 요소만 모은 새 배열을 반환해요.',
-    '5주차 · 고차 함수', { cat: 'predict', tag: 'filter', code: 'const r = [1, 2, 3, 4].filter(n => n % 2 === 0);\nconsole.log(r);', run: 'console.log(JSON.stringify([1,2,3,4].filter(n=>n%2===0)).replace(/,/g,", "))' });
-
-  mc(U, 'reduce()의 결과는?',
-    ['10', '[1, 2, 3, 4]', '4', '0'], 0,
-    'reduce는 누적값을 만들어요. 초기값 0에서 1+2+3+4 = 10.',
-    '5주차 · 고차 함수', { cat: 'predict', tag: 'reduce', code: 'const s = [1, 2, 3, 4].reduce((acc, n) => acc + n, 0);\nconsole.log(s);', run: 'console.log([1,2,3,4].reduce((acc,n)=>acc+n,0))' });
-
-  mc(U, '배열을 순회하면서 각 요소에 함수를 실행하지만 값을 반환하지 않는 메서드는?',
-    ['forEach', 'map', 'filter', 'reduce'], 0,
-    'forEach는 반환값이 undefined예요. 새 배열이 필요하면 map을 써요.',
-    '5주차 · 고차 함수', { tag: 'forEach' });
-
-  mc(U, '전역 함수 parseInt("42px")의 결과는?',
-    ['42', 'NaN', '"42"', '오류'], 0,
-    'parseInt는 앞에서부터 숫자로 읽을 수 있는 부분까지만 변환해요. 맨 앞부터 숫자가 아니면 NaN.',
-    '5주차 · 내장 함수', { cat: 'predict', tag: 'parseInt', code: 'console.log(parseInt("42px"));', run: 'console.log(parseInt("42px"))' });
-
-  mc(U, 'parseInt("abc")의 결과는?',
-    ['NaN', '0', 'undefined', 'null'], 0,
-    '숫자로 변환할 수 없으면 NaN이에요. isNaN()으로 검사해요.',
-    '5주차 · 내장 함수', { cat: 'predict', tag: 'NaN', code: 'console.log(parseInt("abc"));', run: 'console.log(parseInt("abc"))' });
-
-  mc(U, '지역 변수와 전역 변수의 이름이 같을 때 함수 안에서 사용되는 것은?',
-    ['지역 변수', '전역 변수', '둘 다 사용', '오류'], 0,
-    '스코프 체인은 안쪽부터 찾아요. 같은 이름이면 지역 변수가 전역 변수를 가려요.',
-    '5주차 · 스코프', { cat: 'predict', tag: '스코프', code: 'let x = "전역";\nfunction f() {\n  let x = "지역";\n  return x;\n}\nconsole.log(f(), x);', x: { 1: '함수 안의 x는 지역 변수예요.' } });
+  mc(U, 'let 함수 = function () { } 다음 줄에 같은 이름의 선언적 함수 function 함수 () { }를 만들면?',
+    ['오류가 발생한다', '선언적 함수로 덮어쓴다', '익명 함수가 유지된다', '정상 실행된다'], 0,
+    'var는 덮어쓰기가 가능했지만 let/const는 위험을 원천 차단하려고 재선언 시 오류를 발생시켜요.',
+    '5주차 · 소스 5-2-18', { cat: 'predict', tag: 'let', code: 'let 함수 = function () {\n  console.log("익명 함수입니다.")\n}\nfunction 함수 () {\n  console.log("선언적 함수입니다.")\n}\n함수()' });
 })();
